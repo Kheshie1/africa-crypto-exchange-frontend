@@ -1,7 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FiMessageCircle, FiX, FiSend, FiUser, FiCpu } from 'react-icons/fi';
-import { ApiService } from '../services/api';
 import aiService from '../services/aiService';
 import './AIAssistant.css';
 
@@ -48,52 +47,6 @@ const AIAssistant = () => {
     }
   };
 
-  const extractDomainFromMessage = (message) => {
-    // Extract domain-like strings from the message
-    const domainRegex = /([a-zA-Z0-9-]+\.?[a-zA-Z]{2,})/g;
-    const matches = message.match(domainRegex);
-    if (matches) {
-      return matches[0].replace(/[^\w\s.-]/g, '');
-    }
-    
-    // Extract potential domain names without extensions
-    const wordRegex = /\b([a-zA-Z0-9-]+)\b/g;
-    const words = message.match(wordRegex);
-    if (words && words.length > 0) {
-      return words.find(word => word.length > 2 && !['domain', 'search', 'find', 'looking'].includes(word.toLowerCase()));
-    }
-    
-    return null;
-  };
-
-  const formatDomainSearchResponse = (searchResults, searchTerm) => {
-    if (!searchResults || !searchResults.suggestions) {
-      return `I searched for "${searchTerm}" but couldn't find specific results right now. However, I can suggest checking these popular extensions: .africa, .eth, .crypto, .defi, .nft, or .web3. Would you like me to help you explore any of these?`;
-    }
-
-    const available = searchResults.suggestions.filter(s => s.available);
-    const taken = searchResults.suggestions.filter(s => !s.available);
-
-    let response = `Here's what I found for "${searchTerm}":\n\n`;
-
-    if (available.length > 0) {
-      response += `✅ **Available Domains:**\n`;
-      available.slice(0, 3).forEach(domain => {
-        response += `• ${domain.domain} - Available for registration\n`;
-      });
-    }
-
-    if (taken.length > 0) {
-      response += `\n❌ **Unavailable:**\n`;
-      taken.slice(0, 2).forEach(domain => {
-        response += `• ${domain.domain} - Already registered\n`;
-      });
-    }
-
-    response += `\nWould you like me to suggest alternatives or help you register one of the available domains?`;
-    
-    return response;
-  };
 
   const handleSendMessage = async () => {
     if (!inputValue.trim()) return;

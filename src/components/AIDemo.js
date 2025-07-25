@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { FiCpu, FiMessageSquare, FiZap, FiTrendingUp } from 'react-icons/fi';
 import aiService from '../services/aiService';
